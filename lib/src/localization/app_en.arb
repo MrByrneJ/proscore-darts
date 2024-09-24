@@ -1,0 +1,6 @@
+{
+  "appTitle": "proscore_darts",
+  "@appTitle": {
+    "description": "The title of the application"
+  }
+}
