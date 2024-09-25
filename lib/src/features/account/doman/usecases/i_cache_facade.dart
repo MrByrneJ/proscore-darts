@@ -6,6 +6,6 @@ import '../entities/app_user.dart';
 abstract class ICacheFacade {
   Future<AppUser> cacheBasicUser({required String displayName});
   Future<AppUser> checkForCachedUser();
-  Future<void> clearCachedUser(AppUser? user);
+  Future<void> clearCachedUser();
   Future<AppUser> updateUserDetails(AppUser details);
 }

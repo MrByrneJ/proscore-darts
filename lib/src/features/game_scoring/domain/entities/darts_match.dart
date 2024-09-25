@@ -53,15 +53,13 @@ abstract class DartsMatch {
 
   DartsMatch inputScored(int score) {
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.inputScored(score));
+    newSets.last = sets.last.inputScored(score);
     return copyWith(newSets: newSets);
   }
 
   DartsMatch throwDart(Dart dartThrown, [bool isDart = true]) {
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.throwDart(dartThrown, isDart));
+    newSets.last = sets.last.throwDart(dartThrown, isDart);
     return copyWith(newSets: newSets);
   }
 
@@ -75,9 +73,8 @@ abstract class DartsMatch {
     final turn = players.indexWhere((Player e) =>
         e.playerId == sets.last.legs.last.throws.last.player.playerId);
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(
-        sets.last.addWinnerToLeg(winner: winner, dartsThrown: dartsThrown));
+    newSets.last =
+        sets.last.addWinnerToLeg(winner: winner, dartsThrown: dartsThrown);
     var firstToLegs = playSets ? 5 : firstTo;
     var legWins = 0;
     for (var leg in newSets.last.legs) {
@@ -101,8 +98,7 @@ abstract class DartsMatch {
 
   DartsMatch updateNumberOfDartsThrown(int num) {
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.updateNumberOfDartsThrown(num));
+    newSets.last = sets.last.updateNumberOfDartsThrown(num);
     return copyWith(newSets: newSets);
   }
 
@@ -139,8 +135,7 @@ abstract class DartsMatch {
       ])
     ];
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last._copyWith(newLegs: newLegs));
+    newSets.last = sets.last._copyWith(newLegs: newLegs);
     return copyWith(newSets: newSets);
   }
 
@@ -168,44 +163,38 @@ class DartsSet {
 
   DartsSet throwDart(Dart dartThrown, [bool isDart = true]) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(legs.last.throwDart(dartThrown, isDart));
+    newLegs.last = legs.last.throwDart(dartThrown, isDart);
     return _copyWith(newLegs: newLegs);
   }
 
   DartsSet inputScored(int score) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(legs.last.inputScored(score));
+    newLegs.last = legs.last.inputScored(score);
     return _copyWith(newLegs: newLegs);
   }
 
   DartsSet updateThrow(DartThrow thrown) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(legs.last.updateThrow(thrown));
+    newLegs.last = legs.last.updateThrow(thrown);
     return _copyWith(newLegs: newLegs);
   }
 
   DartsSet changeTurn(Player nextPlayer) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(legs.last.changeTurn(nextPlayer));
+    newLegs.last = legs.last.changeTurn(nextPlayer);
     return _copyWith(newLegs: newLegs);
   }
 
   DartsSet addWinnerToLeg({required Player winner, required int dartsThrown}) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(
-        legs.last.addWinnerToLeg(winner: winner, dartsThrown: dartsThrown));
+    newLegs.last =
+        legs.last.addWinnerToLeg(winner: winner, dartsThrown: dartsThrown);
     return _copyWith(newLegs: newLegs);
   }
 
   DartsSet updateNumberOfDartsThrown(int num) {
     var newLegs = [...legs];
-    newLegs.removeLast();
-    newLegs.add(legs.last.updateNumberOfDartsThrown(num));
+    newLegs.last = legs.last.updateNumberOfDartsThrown(num);
     return _copyWith(newLegs: newLegs);
   }
 
@@ -248,29 +237,25 @@ class DartsLeg {
 
   DartsLeg throwDart(Dart dartThrown, [bool isDart = true]) {
     var newThrows = [...throws];
-    newThrows.removeLast();
-    newThrows.add(throws.last.throwDart(dartThrown, isDart));
+    newThrows.last = throws.last.throwDart(dartThrown, isDart);
     return _copyWith(newThrows: newThrows);
   }
 
   DartsLeg inputScored(int score) {
     var newThrows = [...throws];
-    newThrows.removeLast();
-    newThrows.add(throws.last.inputScored(score));
+    newThrows.last = throws.last.inputScored(score);
     return _copyWith(newThrows: newThrows);
   }
 
   DartsLeg updateThrow(DartThrow thrown) {
     var newThrows = [...throws];
-    newThrows.removeLast();
-    newThrows.add(thrown);
+    newThrows.last = thrown;
     return _copyWith(newThrows: newThrows);
   }
 
   DartsLeg updateNumberOfDartsThrown(int num) {
     var newThrows = [...throws];
-    newThrows.removeLast();
-    newThrows.add(throws.last.updatenumberOfDartsThrown(num));
+    newThrows.last = throws.last.updatenumberOfDartsThrown(num);
     return _copyWith(newThrows: newThrows);
   }
 
@@ -400,6 +385,8 @@ class Dart {
         'multiplier': multiplier
       };
 
+  factory Dart.missed() => const Dart(dartIndex: 0, section: 0, multiplier: 1);
+
   factory Dart.fromJson(Map<String, dynamic> dartJson) => Dart(
       dartIndex: dartJson['thrownDartIndex'] ?? 0,
       section: dartJson['section'] ?? 0,
@@ -413,76 +400,3 @@ class Chalk {
 }
 
 enum MatchType { bobs, clock, cricket, x01 }
-
-// class Player {
-//   Player({required this.playerId, required this.displayName});
-
-//   final String playerId;
-//   final String displayName;
-
-//   factory Player.hasError(String error) =>
-//       Player(playerId: 'ERROR: $error', displayName: 'ERROR');
-// }
-
-// abstract class Match {
-//   const Match(
-//       {required this.matchType,
-//       required this.matchId,
-//       required this.dateTime,
-//       required this.players,
-//       required this.playSets,
-//       required this.firstTo,
-//       required this.sets,
-//       required this.startingScore,
-//       required this.winningPlayer});
-
-//   final MatchType matchType;
-//   final String matchId;
-//   final DateTime dateTime;
-//   final List<Player> players;
-//   final bool playSets;
-//   final int firstTo;
-//   final List<MatchSet> sets;
-//   final int startingScore;
-//   final Player? winningPlayer;
-// }
-
-// class Bobs extends Match {
-//   const Bobs(
-//       {required super.matchId,
-//       required super.dateTime,
-//       required super.players,
-//       required super.firstTo,
-//       required super.sets,
-//       required super.winningPlayer})
-//       : super(matchType: MatchType.bobs, playSets: false, startingScore: 27);
-// }
-
-// class MatchSet {
-//   const MatchSet(
-//       {required this.setIndex,
-//       required this.startingIndex,
-//       required this.legs,
-//       this.winningPlayer});
-//   final int setIndex;
-//   final int startingIndex;
-//   final List<MatchLeg> legs;
-//   final Player? winningPlayer;
-
-//   Map<String, dynamic> toJson() => {
-//         'setIndex': setIndex,
-//         'startingIndex': startingIndex,
-//         'legs': [for (final MatchLeg leg in legs) leg.toJson()],
-//         'winningPlayer': winningPlayer,
-//       };
-
-//   factory MatchSet.fromJson(Map<String, dynamic> setJson) => MatchSet(
-//       setIndex: setJson['setIndex'],
-//       startingIndex: setJson['startingIndex'],
-//       legs: [
-//         for (Map<String, dynamic> legJson in setJson['legs'] ?? [])
-//           MatchLeg.fromJson(legJson)
-//       ],
-//       winningPlayer: setJson['winningPlayer']);
-// }
-

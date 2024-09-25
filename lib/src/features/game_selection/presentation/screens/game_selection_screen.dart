@@ -21,7 +21,7 @@ class GameSelectionScreen extends ConsumerWidget {
       {required BuildContext context, required WidgetRef ref, AppUser? user}) {
     ref
         .read(appUserProvider.notifier)
-        .handleEvent(UserServicesEvent.clearData(user));
+        .handleEvent(const UserServicesEvent.clearData());
     Navigator.of(context).pop();
     router.go(SplashScreen.path);
   }
@@ -75,7 +75,7 @@ class GameSelectionScreen extends ConsumerWidget {
                 Row(children: [
                   const SizedBox(width: 10),
                   Text(
-                    'Welcome ${user?.displayName ?? ''}',
+                    'Welcome ${user.displayName}',
                     style: const TextStyle(fontSize: 20, color: primaryWhite),
                   )
                 ]),

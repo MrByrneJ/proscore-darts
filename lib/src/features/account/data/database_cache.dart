@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:localstore/localstore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,7 +23,7 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
     final SharedPreferences prefs = await _prefs;
     prefs.clear();
     prefs.setString('userId', appUser.id);
-    await db.collection('users').doc(appUser.id).delete();
+    await db.collection('users').delete();
     await db.collection('users').doc(appUser.id).set(appUser.toJson);
     return appUser;
   }
@@ -37,11 +39,10 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
   }
 
   @override
-  Future<void> clearCachedUser(AppUser? user) async {
+  Future<void> clearCachedUser() async {
     final SharedPreferences prefs = await _prefs;
     prefs.clear();
-    if (user == null) return;
-    await db.collection('users').doc(user.id).delete();
+    await db.collection('users').delete();
   }
 
   @override

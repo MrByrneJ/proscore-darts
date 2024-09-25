@@ -21,10 +21,10 @@ class MatchHistoryScreen extends ConsumerWidget {
         ),
         child: Column(
           children: [
-            if (state == null || state.history.isEmpty)
+            if (state.history.isEmpty)
               const Text('Nothing to show',
                   style: TextStyle(fontSize: 16, color: primaryWhite)),
-            for (final DartsMatch match in state?.history ?? [])
+            for (final DartsMatch match in state.history)
               HistoryTile(match: match)
           ],
         ));

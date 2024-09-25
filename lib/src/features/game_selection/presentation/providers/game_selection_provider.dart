@@ -39,8 +39,8 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
             startingScore: 501));
   final Ref ref;
   void handleEvent(SelectionScreenEvent event) async {
-    if (ref.read(appUserProvider) == null) router.go(WelcomeScreen.path);
-    final user = ref.read(appUserProvider)!;
+    if (ref.read(appUserProvider).id.isEmpty) router.go(WelcomeScreen.path);
+    final user = ref.read(appUserProvider);
     event.map(
         playX01: (PlayX01 x01) {
           state = X01(

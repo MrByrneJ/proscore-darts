@@ -81,7 +81,7 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
           final user = ref.read(appUserProvider);
 
           if (state.dartsMatch.winningPlayer != null) {
-            if (user != null) {
+            if (user.id.isEmpty) {
               final newUserDetails =
                   user.updateMatchHistory(newMatch: state.dartsMatch);
               ref.read(appUserProvider.notifier).handleEvent(

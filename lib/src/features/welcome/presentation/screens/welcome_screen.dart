@@ -20,7 +20,7 @@ class WelcomeScreen extends ConsumerWidget {
         .read(welcomeScreenProvider.notifier)
         .addEvent(const WelcomeScreenEvent.inputtingComplete());
     final user = ref.read(appUserProvider);
-    if (user != null && user.id.isNotEmpty) {
+    if (user.id.isNotEmpty) {
       FocusScope.of(context).unfocus();
       router.go(GameSelectionScreen.path);
     }

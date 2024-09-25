@@ -15,34 +15,6 @@ class Cricket extends DartsMatch {
             matchType: 'c', name: 'Cricket', startingScore: 0, playSets: false);
   final List<Map<int, int>> cricketNumbers;
 
-  // factory Cricket.initial() => const Cricket(
-  //       cricketNumbers: [
-  //         {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0},
-  //         {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0}
-  //       ],
-  //       players: [
-  //         AppUser(id: '001', displayName: 'James', avatarColor: Colors.amber),
-  //         AppUser(id: '002', displayName: 'Paul', avatarColor: Colors.teal)
-  //       ],
-  //       firstTo: 5,
-  //       sets: [
-  //         DartsSet(
-  //             startingPlayer: AppUser(
-  //                 id: '001', displayName: 'James', avatarColor: Colors.amber),
-  //             legs: [
-  //               DartsLeg(throws: [
-  //                 DartThrow(
-  //                     index: 0,
-  //                     player: AppUser(
-  //                         id: '001',
-  //                         displayName: 'James',
-  //                         avatarColor: Colors.amber),
-  //                     numberOfDartsThrown: 0)
-  //               ])
-  //             ])
-  //       ],
-  //     );
-
   Cricket setCricketNumbers(List<int> numbers) {
     List<Map<int, int>> cNums = [
       for (var _ in players) {for (var number in numbers) number: 0}
@@ -52,15 +24,13 @@ class Cricket extends DartsMatch {
 
   @override
   Dart checkDartIsValid(Dart dartThrown) {
-    final turn =
-        players.indexWhere((e) => e == sets.last.legs.last.throws.last.player);
     final section = dartThrown.section == 50 ? 25 : dartThrown.section;
-    if (canScore(section: section, turn: turn)) return dartThrown;
-    if (cricketNumbers[turn][section]! >= 3) {
+    if (canScore(section: section, turn: getTurn(this))) return dartThrown;
+    if (cricketNumbers[getTurn(this)][section]! >= 3) {
       return Dart(dartIndex: dartThrown.dartIndex, section: 0, multiplier: 1);
     }
-    if (cricketNumbers[turn][section] == 0) return dartThrown;
-    if (cricketNumbers[turn][section] == 1) {
+    if (cricketNumbers[getTurn(this)][section] == 0) return dartThrown;
+    if (cricketNumbers[getTurn(this)][section] == 1) {
       return dartThrown.multiplier == 1
           ? dartThrown
           : Dart(
@@ -73,15 +43,14 @@ class Cricket extends DartsMatch {
   Cricket updateAfterThrow([bool isDart = true]) {
     var thrown = sets.last.legs.last.throws.last;
     final dartThrown = thrown.darts.last;
-    final playerIndex = players.indexWhere((e) => e == thrown.player);
     Map<int, int> temp = {};
-    temp.addEntries(cricketNumbers[playerIndex].entries);
+    temp.addEntries(cricketNumbers[getTurn(this)].entries);
     var set = sets.last.updateThrow(thrown);
     temp.forEach((key, value) {
       if (dartThrown.section == key) {
         temp[key] = temp[key]! + dartThrown.multiplier;
         final n = temp[key]!;
-        if (canScore(section: dartThrown.section, turn: playerIndex)) {
+        if (canScore(section: dartThrown.section, turn: getTurn(this))) {
           set = set.updateThrow(DartThrow(
               throwIndex: thrown.throwIndex,
               player: thrown.player,
@@ -92,10 +61,9 @@ class Cricket extends DartsMatch {
       }
     });
     final newCricketNumbers = [...cricketNumbers];
-    newCricketNumbers[playerIndex] = temp;
+    newCricketNumbers[getTurn(this)] = temp;
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(set);
+    newSets.last = set;
     return copyWith(newCricketNumbers: newCricketNumbers, newSets: newSets);
   }
 
@@ -111,7 +79,7 @@ class Cricket extends DartsMatch {
 
   @override
   bool checkForWin(int turn) {
-    // player has thrown 3 at allnumbers
+    // check to see if player has thrown 3 at allnumbers
     bool allOut = true;
     cricketNumbers[turn].forEach((key, value) {
       if (value < 3) allOut = false;
@@ -134,9 +102,8 @@ class Cricket extends DartsMatch {
   @override
   Cricket changeTurn() {
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.changeTurn(players[
-        getNewTurn(length: players.length, currentIndex: getTurn(this))]));
+    newSets.last = sets.last.changeTurn(players[
+        getNewTurn(length: players.length, currentIndex: getTurn(this))]);
     return copyWith(newSets: newSets);
   }
 

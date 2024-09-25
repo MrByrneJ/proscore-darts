@@ -53,7 +53,6 @@ class ATC extends DartsMatch {
   ATC changeTurn() {
     var thrown = sets.last.legs.last.throws.last;
     var newSets = [...sets];
-    newSets.removeLast();
     var retrigger = true;
     if (thrown.darts.any((e) => e.section == 0)) {
       retrigger = false;
@@ -61,7 +60,7 @@ class ATC extends DartsMatch {
     var nextTurn = retrigger
         ? players.indexWhere((Player e) => e.playerId == thrown.player.playerId)
         : getNewTurn(length: players.length, currentIndex: getTurn(this));
-    newSets.add(sets.last.changeTurn(players[nextTurn]));
+    newSets.last = sets.last.changeTurn(players[nextTurn]);
     return copyWith(newSets: newSets);
   }
 

@@ -10,5 +10,5 @@ class UserServicesEvent with _$UserServicesEvent {
       CreateBasicUser;
   const factory UserServicesEvent.updateUserDetails(AppUser newDetails) =
       UpdateUserDetails;
-  const factory UserServicesEvent.clearData(AppUser? user) = ClearData;
+  const factory UserServicesEvent.clearData() = ClearData;
 }

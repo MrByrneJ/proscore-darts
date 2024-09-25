@@ -33,7 +33,7 @@ String passwordValidationError(String pass) {
   return validator(pass) ?? '';
 }
 
-String confirmPasswordValidationError(String pass, String confirm) {
+String confirmPasswordValidationError(String password, String confirm) {
   if (confirm.isEmpty) return 'Required';
-  return confirm == pass ? '' : 'Passwords do not match';
+  return confirm == password ? '' : 'Passwords do not match';
 }

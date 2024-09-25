@@ -21,7 +21,7 @@ mixin _$UserServicesEvent {
     required TResult Function() checkForUser,
     required TResult Function(String displayName) createBasicUser,
     required TResult Function(AppUser newDetails) updateUserDetails,
-    required TResult Function(AppUser? user) clearData,
+    required TResult Function() clearData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -29,7 +29,7 @@ mixin _$UserServicesEvent {
     TResult? Function()? checkForUser,
     TResult? Function(String displayName)? createBasicUser,
     TResult? Function(AppUser newDetails)? updateUserDetails,
-    TResult? Function(AppUser? user)? clearData,
+    TResult? Function()? clearData,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
@@ -37,7 +37,7 @@ mixin _$UserServicesEvent {
     TResult Function()? checkForUser,
     TResult Function(String displayName)? createBasicUser,
     TResult Function(AppUser newDetails)? updateUserDetails,
-    TResult Function(AppUser? user)? clearData,
+    TResult Function()? clearData,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -133,7 +133,7 @@ class _$CheckForUserImpl implements CheckForUser {
     required TResult Function() checkForUser,
     required TResult Function(String displayName) createBasicUser,
     required TResult Function(AppUser newDetails) updateUserDetails,
-    required TResult Function(AppUser? user) clearData,
+    required TResult Function() clearData,
   }) {
     return checkForUser();
   }
@@ -144,7 +144,7 @@ class _$CheckForUserImpl implements CheckForUser {
     TResult? Function()? checkForUser,
     TResult? Function(String displayName)? createBasicUser,
     TResult? Function(AppUser newDetails)? updateUserDetails,
-    TResult? Function(AppUser? user)? clearData,
+    TResult? Function()? clearData,
   }) {
     return checkForUser?.call();
   }
@@ -155,7 +155,7 @@ class _$CheckForUserImpl implements CheckForUser {
     TResult Function()? checkForUser,
     TResult Function(String displayName)? createBasicUser,
     TResult Function(AppUser newDetails)? updateUserDetails,
-    TResult Function(AppUser? user)? clearData,
+    TResult Function()? clearData,
     required TResult orElse(),
   }) {
     if (checkForUser != null) {
@@ -279,7 +279,7 @@ class _$CreateBasicUserImpl implements CreateBasicUser {
     required TResult Function() checkForUser,
     required TResult Function(String displayName) createBasicUser,
     required TResult Function(AppUser newDetails) updateUserDetails,
-    required TResult Function(AppUser? user) clearData,
+    required TResult Function() clearData,
   }) {
     return createBasicUser(displayName);
   }
@@ -290,7 +290,7 @@ class _$CreateBasicUserImpl implements CreateBasicUser {
     TResult? Function()? checkForUser,
     TResult? Function(String displayName)? createBasicUser,
     TResult? Function(AppUser newDetails)? updateUserDetails,
-    TResult? Function(AppUser? user)? clearData,
+    TResult? Function()? clearData,
   }) {
     return createBasicUser?.call(displayName);
   }
@@ -301,7 +301,7 @@ class _$CreateBasicUserImpl implements CreateBasicUser {
     TResult Function()? checkForUser,
     TResult Function(String displayName)? createBasicUser,
     TResult Function(AppUser newDetails)? updateUserDetails,
-    TResult Function(AppUser? user)? clearData,
+    TResult Function()? clearData,
     required TResult orElse(),
   }) {
     if (createBasicUser != null) {
@@ -434,7 +434,7 @@ class _$UpdateUserDetailsImpl implements UpdateUserDetails {
     required TResult Function() checkForUser,
     required TResult Function(String displayName) createBasicUser,
     required TResult Function(AppUser newDetails) updateUserDetails,
-    required TResult Function(AppUser? user) clearData,
+    required TResult Function() clearData,
   }) {
     return updateUserDetails(newDetails);
   }
@@ -445,7 +445,7 @@ class _$UpdateUserDetailsImpl implements UpdateUserDetails {
     TResult? Function()? checkForUser,
     TResult? Function(String displayName)? createBasicUser,
     TResult? Function(AppUser newDetails)? updateUserDetails,
-    TResult? Function(AppUser? user)? clearData,
+    TResult? Function()? clearData,
   }) {
     return updateUserDetails?.call(newDetails);
   }
@@ -456,7 +456,7 @@ class _$UpdateUserDetailsImpl implements UpdateUserDetails {
     TResult Function()? checkForUser,
     TResult Function(String displayName)? createBasicUser,
     TResult Function(AppUser newDetails)? updateUserDetails,
-    TResult Function(AppUser? user)? clearData,
+    TResult Function()? clearData,
     required TResult orElse(),
   }) {
     if (updateUserDetails != null) {
@@ -521,8 +521,6 @@ abstract class _$$ClearDataImplCopyWith<$Res> {
   factory _$$ClearDataImplCopyWith(
           _$ClearDataImpl value, $Res Function(_$ClearDataImpl) then) =
       __$$ClearDataImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({AppUser? user});
 }
 
 /// @nodoc
@@ -535,51 +533,26 @@ class __$$ClearDataImplCopyWithImpl<$Res>
 
   /// Create a copy of UserServicesEvent
   /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? user = freezed,
-  }) {
-    return _then(_$ClearDataImpl(
-      freezed == user
-          ? _value.user
-          : user // ignore: cast_nullable_to_non_nullable
-              as AppUser?,
-    ));
-  }
 }
 
 /// @nodoc
 
 class _$ClearDataImpl implements ClearData {
-  const _$ClearDataImpl(this.user);
-
-  @override
-  final AppUser? user;
+  const _$ClearDataImpl();
 
   @override
   String toString() {
-    return 'UserServicesEvent.clearData(user: $user)';
+    return 'UserServicesEvent.clearData()';
   }
 
   @override
   bool operator ==(Object other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$ClearDataImpl &&
-            (identical(other.user, user) || other.user == user));
+        (other.runtimeType == runtimeType && other is _$ClearDataImpl);
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, user);
-
-  /// Create a copy of UserServicesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$ClearDataImplCopyWith<_$ClearDataImpl> get copyWith =>
-      __$$ClearDataImplCopyWithImpl<_$ClearDataImpl>(this, _$identity);
+  int get hashCode => runtimeType.hashCode;
 
   @override
   @optionalTypeArgs
@@ -587,9 +560,9 @@ class _$ClearDataImpl implements ClearData {
     required TResult Function() checkForUser,
     required TResult Function(String displayName) createBasicUser,
     required TResult Function(AppUser newDetails) updateUserDetails,
-    required TResult Function(AppUser? user) clearData,
+    required TResult Function() clearData,
   }) {
-    return clearData(user);
+    return clearData();
   }
 
   @override
@@ -598,9 +571,9 @@ class _$ClearDataImpl implements ClearData {
     TResult? Function()? checkForUser,
     TResult? Function(String displayName)? createBasicUser,
     TResult? Function(AppUser newDetails)? updateUserDetails,
-    TResult? Function(AppUser? user)? clearData,
+    TResult? Function()? clearData,
   }) {
-    return clearData?.call(user);
+    return clearData?.call();
   }
 
   @override
@@ -609,11 +582,11 @@ class _$ClearDataImpl implements ClearData {
     TResult Function()? checkForUser,
     TResult Function(String displayName)? createBasicUser,
     TResult Function(AppUser newDetails)? updateUserDetails,
-    TResult Function(AppUser? user)? clearData,
+    TResult Function()? clearData,
     required TResult orElse(),
   }) {
     if (clearData != null) {
-      return clearData(user);
+      return clearData();
     }
     return orElse();
   }
@@ -657,13 +630,5 @@ class _$ClearDataImpl implements ClearData {
 }
 
 abstract class ClearData implements UserServicesEvent {
-  const factory ClearData(final AppUser? user) = _$ClearDataImpl;
-
-  AppUser? get user;
-
-  /// Create a copy of UserServicesEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$ClearDataImplCopyWith<_$ClearDataImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+  const factory ClearData() = _$ClearDataImpl;
 }

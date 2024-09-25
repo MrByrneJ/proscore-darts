@@ -42,8 +42,7 @@ class Bobs extends DartsMatch {
     }
     thrown = thrown.updateScore(scored);
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.updateThrow(thrown));
+    newSets.last = sets.last.updateThrow(thrown);
     return copyWith(newSets: newSets);
   }
 
@@ -61,12 +60,9 @@ class Bobs extends DartsMatch {
 
   Bobs change(Bobs match) {
     final thrown = match.sets.last.legs.last.throws.last;
-    // var nextTurn = getNewTurn(players: players, currentPlayer: thrown.player);
     var newSet = match.sets.last;
     var newSets = [...match.sets];
     var newTargetNumbers = [...targetNumbers];
-    // final player = players[turn];
-    //  newSets.removeLast();
     if (thrown.scored == 0 && thrown.darts.isNotEmpty) {
       newSet = newSet
           .updateThrow(thrown.updateScore(-targetNumbers[getTurn(match)]));

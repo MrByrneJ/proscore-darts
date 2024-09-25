@@ -23,23 +23,22 @@ class X01 extends DartsMatch {
   Dart checkDartIsValid(Dart dartThrown) {
     final player = sets.last.legs.last.throws.last.player;
     final score = getScore(players.indexWhere((final Player e) => e == player));
+    // Incase of [doubleIn] dart must be a double
     if (score == startingScore && doubleIn) {
-      return dartThrown.multiplier == 2
-          ? dartThrown
-          : Dart(dartIndex: dartThrown.dartIndex, section: 0, multiplier: 1);
+      return dartThrown.multiplier == 2 ? dartThrown : Dart.missed();
     }
+    // Incase of [doubleOut] dart must be a double
     if (score - dartThrown.score == 0) {
       if (doubleOut && dartThrown.multiplier != 2) {
-        dartThrown =
-            Dart(dartIndex: dartThrown.dartIndex, section: 0, multiplier: 1);
+        dartThrown = Dart.missed();
       }
-
       return dartThrown;
     }
-    if (score - dartThrown.score <= 0) {
-      return Dart(dartIndex: dartThrown.dartIndex, section: 0, multiplier: 1);
+    // Any score less the 2 if [doubleOut] or 1 otherwise is bust
+    if (score - dartThrown.score == 1 && doubleOut) {
+      return Dart.missed();
     }
-    return dartThrown;
+    return score <= 0 ? Dart.missed() : dartThrown;
   }
 
   @override
@@ -49,8 +48,7 @@ class X01 extends DartsMatch {
     thrown =
         sets.last.legs.last.throws.last.updateScore(thrown.scored + dart.score);
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.updateThrow(thrown));
+    newSets.last = sets.last.updateThrow(thrown);
     return copyWith(newSets: newSets);
   }
 
@@ -66,8 +64,7 @@ class X01 extends DartsMatch {
     var nextTurn =
         getNewTurn(length: players.length, currentIndex: getTurn(this));
     var newSets = [...sets];
-    newSets.removeLast();
-    newSets.add(sets.last.changeTurn(players[nextTurn]));
+    newSets.last = sets.last.changeTurn(players[nextTurn]);
     return copyWith(newSets: newSets);
   }
 

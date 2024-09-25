@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:localstore/localstore.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'core/constant_variables.dart';
 import 'core/widgets/loading.dart';
@@ -102,26 +100,19 @@ class MyApp extends StatelessWidget {
   }
 }
 
-final Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
-final db = Localstore.instance;
-
-Future<void> clearData() async {
-  // TODO: timeout
-  // await Future.delayed(const Duration(seconds: 20));
-  final SharedPreferences prefs = await _prefs;
-  await prefs.clear();
-  await db.collection('users').delete();
-}
-
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
   static const path = '/';
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    ref
+        .read(appUserProvider.notifier)
+        .handleEvent(const UserServicesEvent.checkForUser());
     final state = ref.watch(appUserProvider);
+
     return Builder(builder: (context) {
-      if (state != null) {
+      if (state.id.isEmpty) {
         return state.id.isEmpty
             ? const WelcomeScreen()
             : const GameSelectionScreen();
