@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proscore_darts/src/features/account/doman/entities/app_user.dart';
+import 'package:proscore_darts/src/features/game_selection/presentation/screens/game_selection_screen.dart';
+import 'package:proscore_darts/src/features/welcome/presentation/screens/welcome_screen.dart';
 
 import 'core/constant_variables.dart';
 import 'core/widgets/loading.dart';
 import 'features/account/doman/usecases/user_services_event.dart';
 import 'features/account/presentation/providers/app_user_provider.dart';
-import 'features/game_selection/presentation/screens/game_selection_screen.dart';
-import 'features/welcome/presentation/screens/welcome_screen.dart';
 import 'router/router.dart';
 import 'settings/settings_controller.dart';
 
-/// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({
     super.key,
@@ -106,22 +106,26 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    ref
-        .read(appUserProvider.notifier)
-        .handleEvent(const UserServicesEvent.checkForUser());
-    final state = ref.watch(appUserProvider);
-
-    return Builder(builder: (context) {
-      if (state.id.isEmpty) {
-        return state.id.isEmpty
-            ? const WelcomeScreen()
-            : const GameSelectionScreen();
-      }
-      ref
-          .read(appUserProvider.notifier)
-          .handleEvent(const UserServicesEvent.checkForUser());
-
-      return const Loading();
-    });
+    print('Rebuild!!!!!!!');
+    // final state = ref.watch(appUserProvider);
+    // if (state == null) {
+    //   ref
+    //       .read(appUserProvider.notifier)
+    //       .handleEvent(const UserServicesEvent.checkForUser());
+    // }
+    return FutureBuilder(
+        future: ref
+            .read(appUserProvider.notifier)
+            .handleEvent(const UserServicesEvent.checkForUser()),
+        builder: (context, AsyncSnapshot snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Loading();
+          }
+          final state = ref.watch(appUserProvider);
+          print(state?.id ?? 'NULL');
+          return state == null || state.id.isEmpty
+              ? const WelcomeScreen()
+              : const GameSelectionScreen();
+        });
   }
 }

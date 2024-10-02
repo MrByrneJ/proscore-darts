@@ -33,7 +33,7 @@ class AppUser {
   Map<String, dynamic> get toJson => {
         'userId': id,
         'displayName': displayName,
-        'matchHistory': [for (final match in history) match.toJson]
+        // 'matchHistory': [for (final match in history) match.toJson]
       };
 
   factory AppUser.fromJson(Map<String, dynamic> data) {
@@ -54,10 +54,11 @@ class AppUser {
     return AppUser(
         id: data['userId'],
         displayName: data['displayName'],
-        history: [
-          for (Map<String, dynamic> matchData in data['matchHistory'] ?? [])
-            convertMatchData(matchData: matchData)!
-        ]);
+        // history: [
+        //   for (Map<String, dynamic> matchData in data['matchHistory'] ?? [])
+        //     convertMatchData(matchData: matchData)!
+        // ]
+        history: []);
   }
 
   AppUser _copyWith({

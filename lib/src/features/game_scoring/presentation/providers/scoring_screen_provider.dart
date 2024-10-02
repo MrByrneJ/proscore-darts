@@ -54,12 +54,26 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
             state = state.updateSelectedMultiplier(selected.multiplier),
         inputIndicatedScore: (InputIndicatedScore number) =>
             state = state.inputIndicatedScore(number.keyed),
+        startGame: (StartGame value) {
+          var newState = state.copyWith(newDartsMatch: value.newMatch);
+          if (value.newMatch is Cricket) {
+            newState = newState.copyWith(
+                newInputs: [ScoringInputMethod.cricket],
+                newSelectedMethod: ScoringInputMethod.cricket);
+          }
+          if (value.newMatch is Bobs || value.newMatch is ATC) {
+            newState = newState.copyWith(
+                newInputs: [ScoringInputMethod.simple],
+                newSelectedMethod: ScoringInputMethod.simple);
+          }
+          state = newState;
+          router.push(ScoringScreen.path);
+        },
         throwDart: (ThrowDart thrown) async {
           _processingGameDate = true;
           trimGameProgress();
           state = state.throwDart(thrown.dartThrown,
               state.selectedInput != ScoringInputMethod.cricket);
-          //  await Future.delayed(const Duration(seconds: 1));
           state = state.updateAfterThrow();
           gameProgress.add(state.update());
           currentIndex++;
@@ -81,7 +95,7 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
           final user = ref.read(appUserProvider);
 
           if (state.dartsMatch.winningPlayer != null) {
-            if (user.id.isEmpty) {
+            if (user != null) {
               final newUserDetails =
                   user.updateMatchHistory(newMatch: state.dartsMatch);
               ref.read(appUserProvider.notifier).handleEvent(
@@ -106,21 +120,6 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
               newIndicatedScore: 0,
               newIndicatedDarts: [],
               newShowEndOfLegDialog: false);
-        },
-        startGame: (StartGame value) {
-          var newState = state.copyWith(newDartsMatch: value.newMatch);
-          if (value.newMatch is Cricket) {
-            newState = newState.copyWith(
-                newInputs: [ScoringInputMethod.cricket],
-                newSelectedMethod: ScoringInputMethod.cricket);
-          }
-          if (value.newMatch is Bobs || value.newMatch is ATC) {
-            newState = newState.copyWith(
-                newInputs: [ScoringInputMethod.simple],
-                newSelectedMethod: ScoringInputMethod.simple);
-          }
-          state = newState;
-          router.push(ScoringScreen.path);
         });
   }
 }

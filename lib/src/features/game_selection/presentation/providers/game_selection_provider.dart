@@ -39,7 +39,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
             startingScore: 501));
   final Ref ref;
   void handleEvent(SelectionScreenEvent event) async {
-    if (ref.read(appUserProvider).id.isEmpty) router.go(WelcomeScreen.path);
+    if (ref.read(appUserProvider) != null) router.go(WelcomeScreen.path);
     final user = ref.read(appUserProvider);
     event.map(
         playX01: (PlayX01 x01) {
@@ -51,7 +51,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               firstTo: 5,
               playSets: false,
               players: [
-                Player(playerId: user.id, displayName: user.displayName)
+                Player(playerId: user!.id, displayName: user.displayName)
               ],
               sets: [
                 DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
@@ -77,7 +77,9 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0}
             ],
             firstTo: 5,
-            players: [Player(playerId: user.id, displayName: user.displayName)],
+            players: [
+              Player(playerId: user!.id, displayName: user.displayName)
+            ],
             sets: [
               DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
                 DartsLeg(legIndex: 1, throws: [
@@ -99,7 +101,9 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
             matchId: const Uuid().v1(),
             dateTime: DateTime.now(),
             targetNumbers: const [1],
-            players: [Player(playerId: user.id, displayName: user.displayName)],
+            players: [
+              Player(playerId: user!.id, displayName: user.displayName)
+            ],
             sets: [
               DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
                 DartsLeg(legIndex: 1, throws: [
@@ -123,7 +127,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               targetNumbers: const [1],
               allowNegativeNumbers: false,
               players: [
-                Player(playerId: user.id, displayName: user.displayName)
+                Player(playerId: user!.id, displayName: user.displayName)
               ],
               sets: [
                 DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [

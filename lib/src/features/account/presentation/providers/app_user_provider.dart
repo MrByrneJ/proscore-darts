@@ -7,20 +7,19 @@ import '../../doman/entities/app_user.dart';
 import '../../doman/usecases/i_cache_facade.dart';
 import '../../doman/usecases/user_services_event.dart';
 
-final appUserProvider = StateNotifierProvider<AppUserServices, AppUser>((ref) =>
-    AppUserServices(cacheFacade: ref.read(databaseCacheProvider), ref: ref));
+final appUserProvider = StateNotifierProvider<AppUserServices, AppUser?>(
+    (ref) => AppUserServices(
+        cacheFacade: ref.read(databaseCacheProvider), ref: ref));
 
-class AppUserServices extends StateNotifier<AppUser> {
-  AppUserServices({required this.cacheFacade, required this.ref})
-      : super(AppUser.defaultUser(ref));
+class AppUserServices extends StateNotifier<AppUser?> {
+  AppUserServices({required this.cacheFacade, required this.ref}) : super(null);
   final ICacheFacade cacheFacade;
   final Ref ref;
 
   Future<void> handleEvent(UserServicesEvent event) async {
     event.map(
-        checkForUser: (event) async {
-          state = await cacheFacade.checkForCachedUser();
-        },
+        checkForUser: (event) async =>
+            state = await cacheFacade.checkForCachedUser(),
         createBasicUser: (event) async => state =
             await cacheFacade.cacheBasicUser(displayName: event.displayName),
         clearData: (event) async {
