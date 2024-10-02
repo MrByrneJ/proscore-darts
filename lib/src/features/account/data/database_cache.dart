@@ -34,7 +34,6 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
     final id = prefs.getString('userId');
     if (id == null) return AppUser.defaultUser(ref);
     var details = await db.collection('users').doc(id).get();
-    print('Details: $details');
     if (details == null) return AppUser.defaultUser(ref);
 
     return AppUser.fromJson(details);

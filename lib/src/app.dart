@@ -106,13 +106,6 @@ class SplashScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('Rebuild!!!!!!!');
-    // final state = ref.watch(appUserProvider);
-    // if (state == null) {
-    //   ref
-    //       .read(appUserProvider.notifier)
-    //       .handleEvent(const UserServicesEvent.checkForUser());
-    // }
     return FutureBuilder(
         future: ref
             .read(appUserProvider.notifier)
@@ -122,7 +115,6 @@ class SplashScreen extends ConsumerWidget {
             return const Loading();
           }
           final state = ref.watch(appUserProvider);
-          print(state?.id ?? 'NULL');
           return state == null || state.id.isEmpty
               ? const WelcomeScreen()
               : const GameSelectionScreen();

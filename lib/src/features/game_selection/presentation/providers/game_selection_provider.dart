@@ -9,7 +9,6 @@ import '../../../game_scoring/domain/entities/atc.dart';
 import '../../../game_scoring/domain/entities/cricket.dart';
 import '../../../game_scoring/domain/entities/darts_match.dart';
 import '../../../game_scoring/domain/entities/x01.dart';
-import '../../../welcome/presentation/screens/welcome_screen.dart';
 import '../../domain/usecases/selection_screen_event.dart';
 import '../screens/add_player_screen.dart';
 import '../screens/player_settings_screen.dart';
@@ -39,7 +38,6 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
             startingScore: 501));
   final Ref ref;
   void handleEvent(SelectionScreenEvent event) async {
-    if (ref.read(appUserProvider) != null) router.go(WelcomeScreen.path);
     final user = ref.read(appUserProvider);
     event.map(
         playX01: (PlayX01 x01) {
