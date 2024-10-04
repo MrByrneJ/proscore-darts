@@ -91,11 +91,11 @@ class PlayerSettingsScreen extends ConsumerWidget {
           ),
           GameSetupBar(
             key: const ValueKey('playerSettingsSetUpBar'),
-            onNextPressed: () => state is X01
-                ? router.push(MatchSettingsScreen.path)
-                : ref
+            onNextPressed: () => state is ATC
+                ? ref
                     .read(scoringScreenProvider.notifier)
-                    .handleEvent(ScoringScreenEvent.startGame(state)),
+                    .handleEvent(ScoringScreenEvent.startGame(state))
+                : router.push(MatchSettingsScreen.path),
             backLable: state is X01 ? 'Starting Score' : 'Select Game',
             nextLable: state is ATC ? 'Play ATC' : 'Match Settings',
           ),

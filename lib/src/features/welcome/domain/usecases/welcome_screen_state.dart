@@ -26,7 +26,9 @@ class WelcomeScreenState {
   }
 
   WelcomeScreenState? inputtingComplete() {
+    print("Name: $displayName");
     final displayNameErrorMessage = displayNameValidationError(displayName);
+    print("ERROR: $displayNameErrorMessage");
     if (displayNameErrorMessage.isEmpty) return null;
     return copyWith(
       newShowErrorMessages: true,

@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proscore_darts/src/features/game_selection/presentation/screens/game_selection_screen.dart';
 
 import '../../../../core/constant_variables.dart';
 import '../../../../core/widgets/display_name_input_field.dart';
 import '../../../../core/widgets/image_background_scaffold.dart';
-import '../../../../router/router.dart';
-import '../../../account/presentation/providers/app_user_provider.dart';
 import '../../domain/usecases/welcome_screen_event.dart';
 import '../providers/welcome_screen_provider.dart';
 
@@ -14,17 +11,6 @@ class WelcomeScreen extends ConsumerWidget {
   const WelcomeScreen({super.key});
 
   static const path = '/welcome';
-
-  void submit(BuildContext context, WidgetRef ref) {
-    ref
-        .read(welcomeScreenProvider.notifier)
-        .addEvent(const WelcomeScreenEvent.inputtingComplete());
-    final user = ref.read(appUserProvider);
-    if (user != null) {
-      FocusScope.of(context).unfocus();
-      router.go(GameSelectionScreen.path);
-    }
-  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -52,7 +38,9 @@ class WelcomeScreen extends ConsumerWidget {
                     onChanged: (value) => ref
                         .read(welcomeScreenProvider.notifier)
                         .addEvent(WelcomeScreenEvent.userInputting(value)),
-                    onSubmitted: (_) => submit(context, ref),
+                    onSubmitted: (_) => ref
+                        .read(welcomeScreenProvider.notifier)
+                        .addEvent(const WelcomeScreenEvent.inputtingComplete()),
                   )),
               if (state.showErrorMessages && state.errorMessage.isNotEmpty)
                 const SizedBox(height: 4),
@@ -64,7 +52,9 @@ class WelcomeScreen extends ConsumerWidget {
                 ),
               const SizedBox(height: 10),
               ElevatedButton(
-                  onPressed: () => submit(context, ref),
+                  onPressed: () => ref
+                      .read(welcomeScreenProvider.notifier)
+                      .addEvent(const WelcomeScreenEvent.inputtingComplete()),
                   child: const Text('Submit'))
             ]),
       ),

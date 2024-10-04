@@ -63,7 +63,7 @@ class ScoringScreenState {
   }
 
   ScoringScreenState submitScored(int scored) {
-    if (dartsMatch is! X01) this;
+    if (dartsMatch is! X01) return this;
     if (dartsMatch.getScore(getTurn(dartsMatch)) - scored < 0) scored = 0;
     return copyWith(newDartsMatch: dartsMatch.inputScored(scored));
   }
@@ -88,9 +88,10 @@ class ScoringScreenState {
 
   /// Returns the [index] of the [Player] cureently throwing.
   int getTurn(DartsMatch match) {
-    var player = match.sets.last.legs.last.throws.last.player;
-    return match.players
-        .indexWhere((element) => element.playerId == player.playerId);
+    var playerId = match.sets.last.legs.last.throws.last.player.playerId;
+    var turn =
+        match.players.indexWhere((element) => element.playerId == playerId);
+    return turn;
   }
 
   /// Returns the Mulitple of that [Dart] : [Section] as an [int]
@@ -113,29 +114,9 @@ class ScoringScreenState {
   ScoringScreenState updateNumberOfDartsThrown(int num) =>
       copyWith(newDartsMatch: dartsMatch.updateNumberOfDartsThrown(num));
 
-  ScoringScreenState copyWith(
-          {DartsMatch? newDartsMatch,
-          int? newIndicatedScore,
-          int? newDartsRemaining,
-          List<ScoringInputMethod>? newInputs,
-          ScoringInputMethod? newSelectedMethod,
-          SelectedMultiplier? newSelectedMultiplier,
-          List<Dart>? newIndicatedDarts,
-          bool? newShowEndOfLegDialog}) =>
-      ScoringScreenState(
-          dartsMatch: newDartsMatch ?? dartsMatch,
-          indicatedScore: newIndicatedScore ?? indicatedScore,
-          dartsRemaining: newDartsRemaining ?? dartsRemaining,
-          availableInputs: newInputs ?? availableInputs,
-          selectedInput: newSelectedMethod ?? selectedInput,
-          selectedMultiplier: newSelectedMultiplier ?? selectedMultiplier,
-          indicatedDarts: newIndicatedDarts ?? indicatedDarts,
-          showEndOfLegDialog: newShowEndOfLegDialog ?? showEndOfLegDialog);
-
   ScoringScreenState update({bool? changeTurn = false}) {
     var newMatch = dartsMatch;
     var turn = getTurn(dartsMatch);
-
     // check for win
     if (dartsMatch.checkForWin(turn)) {
       int dartsThrown = dartsMatch.sets.last.legs.last.throws.last.darts.length;
@@ -166,4 +147,23 @@ class ScoringScreenState {
         newDartsMatch: newMatch,
         newIndicatedScore: newMatch.getIndicatedScore(turn));
   }
+
+  ScoringScreenState copyWith(
+          {DartsMatch? newDartsMatch,
+          int? newIndicatedScore,
+          int? newDartsRemaining,
+          List<ScoringInputMethod>? newInputs,
+          ScoringInputMethod? newSelectedMethod,
+          SelectedMultiplier? newSelectedMultiplier,
+          List<Dart>? newIndicatedDarts,
+          bool? newShowEndOfLegDialog}) =>
+      ScoringScreenState(
+          dartsMatch: newDartsMatch ?? dartsMatch,
+          indicatedScore: newIndicatedScore ?? indicatedScore,
+          dartsRemaining: newDartsRemaining ?? dartsRemaining,
+          availableInputs: newInputs ?? availableInputs,
+          selectedInput: newSelectedMethod ?? selectedInput,
+          selectedMultiplier: newSelectedMultiplier ?? selectedMultiplier,
+          indicatedDarts: newIndicatedDarts ?? indicatedDarts,
+          showEndOfLegDialog: newShowEndOfLegDialog ?? showEndOfLegDialog);
 }

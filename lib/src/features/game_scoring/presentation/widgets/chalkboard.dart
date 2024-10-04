@@ -12,7 +12,6 @@ class Chalkboard extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(scoringScreenProvider);
-
     return Container(
       alignment: Alignment.topCenter,
       color: darkShadowColor,

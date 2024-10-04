@@ -32,6 +32,7 @@ class CreateUserContentCard extends ConsumerWidget {
     //     currentIndex == avatarColors.length - 1 ? 0 : currentIndex + 1;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Row(
         //   mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +63,13 @@ class CreateUserContentCard extends ConsumerWidget {
           inputAction: TextInputAction.done,
         ),
         if (state.showErrorMessages && state.errorMessage.isNotEmpty)
-          Text(state.errorMessage),
+          Padding(
+            padding: const EdgeInsets.only(left: 15.0),
+            child: Text(
+              state.errorMessage,
+              style: const TextStyle(fontSize: 12, color: primaryWhite),
+            ),
+          ),
         const SizedBox(height: 10),
         ElevatedButton(
             onPressed: () => submitForm(context, ref),

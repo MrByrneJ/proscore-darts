@@ -28,9 +28,9 @@ class WelcomeScreenServices extends StateNotifier<WelcomeScreenState> {
             .handleEvent(UserServicesEvent.createBasicUser(state.displayName));
         state = WelcomeScreenState.initial();
         router.pushReplacement(GameSelectionScreen.path);
-      } else {
-        state = newState;
+        return;
       }
+      state = newState;
     });
   }
 }

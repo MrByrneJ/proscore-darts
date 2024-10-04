@@ -45,7 +45,10 @@ class AddPlayerScreen extends ConsumerWidget {
           SliverToBoxAdapter(
               child:
                   //           getCurrentCard(state.category, state.listOfAvailableFriends)),
-                  CreateUserContentCard()),
+                  Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 50, vertical: 10),
+                      child: CreateUserContentCard())),
           // SliverToBoxAdapter(
           //   child: Padding(
           //     padding: const EdgeInsets.symmetric(

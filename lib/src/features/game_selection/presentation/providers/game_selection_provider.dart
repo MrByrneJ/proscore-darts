@@ -127,17 +127,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               players: [
                 Player(playerId: user!.id, displayName: user.displayName)
               ],
-              sets: [
-                DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
-                  DartsLeg(legIndex: 1, throws: [
-                    DartThrow(
-                        throwIndex: 1,
-                        player: Player(
-                            playerId: user.id, displayName: user.displayName),
-                        numberOfDartsThrown: 0)
-                  ])
-                ])
-              ]);
+              sets: const []);
           router
               .push(PlayerSettingsScreen.path)
               .whenComplete(() => ref.invalidate(selectionScreenProvider));
@@ -157,16 +147,48 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
           var newPlayers = [...state.players];
           Player player = newPlayers.removeAt(value.oldIndex);
           newPlayers.insert(newIndex, player);
-          state = state.copyWith(newPlayers: newPlayers);
+          state = state.copyWith(newPlayers: newPlayers, newSets: [
+            DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
+              DartsLeg(legIndex: 1, throws: [
+                DartThrow(
+                    throwIndex: 1,
+                    player: newPlayers[0],
+                    numberOfDartsThrown: 0)
+              ])
+            ])
+          ]);
         },
         removePlayer: (RemovePlayer value) {
           var newPlayers = [...state.players];
           newPlayers.removeAt(value.selected);
-          state = state.copyWith(newPlayers: newPlayers);
+          state = state.copyWith(
+              newPlayers: newPlayers,
+              newSets: newPlayers.isNotEmpty
+                  ? [
+                      DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
+                        DartsLeg(legIndex: 1, throws: [
+                          DartThrow(
+                              throwIndex: 1,
+                              player: newPlayers[0],
+                              numberOfDartsThrown: 0)
+                        ])
+                      ])
+                    ]
+                  : []);
         },
         addPlayer: (AddPlayer value) {
           var newState =
               state.copyWith(newPlayers: [...state.players, value.player]);
+          newState = newState.copyWith(newSets: [
+            DartsSet(setIndex: 1, startingPlayerIndex: 0, legs: [
+              DartsLeg(legIndex: 1, throws: [
+                DartThrow(
+                    throwIndex: 1,
+                    player: newState.players[0],
+                    numberOfDartsThrown: 0)
+              ])
+            ])
+          ]);
           if (newState is Bobs) {
             newState = newState.copyWith(
                 newTargetNumbers: [for (final _ in newState.players) 1]);

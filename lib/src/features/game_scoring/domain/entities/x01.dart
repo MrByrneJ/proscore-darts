@@ -22,7 +22,8 @@ class X01 extends DartsMatch {
   @override
   Dart checkDartIsValid(Dart dartThrown) {
     final player = sets.last.legs.last.throws.last.player;
-    final score = getScore(players.indexWhere((final Player e) => e == player));
+    final score = getScore(
+        players.indexWhere((final Player p) => p.playerId == player.playerId));
     // Incase of [doubleIn] dart must be a double
     if (score == startingScore && doubleIn) {
       return dartThrown.multiplier == 2 ? dartThrown : Dart.missed();

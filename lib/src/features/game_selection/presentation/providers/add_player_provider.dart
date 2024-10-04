@@ -32,6 +32,7 @@ class AddPlayerServices extends StateNotifier<AddPlayerScreenState> {
           ref.read(selectionScreenProvider.notifier).handleEvent(
               SelectionScreenEvent.addPlayer(state.selectedPlayer));
           state = AddPlayerScreenState.initial(ref);
+
           router.pop();
         } else {
           state = newState;
