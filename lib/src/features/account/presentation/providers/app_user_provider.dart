@@ -28,9 +28,8 @@ class AppUserServices extends StateNotifier<AppUser?> {
           return router.go(WelcomeScreen.path);
         },
         updateUserDetails: (UpdateUserDetails value) async {
-          await cacheFacade.clearCachedUser();
-          await cacheFacade.updateUserDetails(value.newDetails);
-          state = value.newDetails;
+          final user = await cacheFacade.updateUserDetails(value.newDetails);
+          state = user;
         });
   }
 }

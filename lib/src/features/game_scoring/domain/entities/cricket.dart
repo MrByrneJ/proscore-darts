@@ -40,7 +40,7 @@ class Cricket extends DartsMatch {
   }
 
   @override
-  Cricket updateAfterThrow([bool isDart = true]) {
+  Cricket updateAfterThrow() {
     var thrown = sets.last.legs.last.throws.last;
     final dartThrown = thrown.darts.last;
     Map<int, int> temp = {};
@@ -84,13 +84,22 @@ class Cricket extends DartsMatch {
     cricketNumbers[turn].forEach((key, value) {
       if (value < 3) allOut = false;
     });
-    // player has highestscore
+    // check if player has highestscore
     var highScore = 0;
     for (var i = 0; i < players.length; i++) {
       var score = getScore(i);
       if (score > highScore) highScore = score;
     }
     return allOut && getScore(turn) == highScore;
+  }
+
+  Cricket resetCricketNumbers() {
+    var newCricketNumbers = [...cricketNumbers];
+    for (var i = 0; i < players.length; i++) {
+      newCricketNumbers[i]
+          .forEach((key, value) => newCricketNumbers[i][key] = 0);
+    }
+    return copyWith(newCricketNumbers: newCricketNumbers);
   }
 
   @override
@@ -102,8 +111,9 @@ class Cricket extends DartsMatch {
   @override
   Cricket changeTurn() {
     var newSets = [...sets];
-    newSets.last = sets.last.changeTurn(players[
-        getNewTurn(length: players.length, currentIndex: getTurn(this))]);
+    final nextPlayer = players[
+        getNewTurn(length: players.length, currentIndex: getTurn(this))];
+    newSets.last = sets.last.changeTurn(nextPlayer);
     return copyWith(newSets: newSets);
   }
 
@@ -131,7 +141,7 @@ class Cricket extends DartsMatch {
   int getIndicatedScore(int turn) => sets.last.legs.last.throws.last.scored;
 
   factory Cricket.fromJson(Map<String, dynamic> data) => Cricket(
-      cricketNumbers: data['cricketNumbers'] ?? [{}, {}, {}],
+      cricketNumbers: const [],
       matchId: data['matchId'] ?? 'Error',
       dateTime: DateTime.parse(data['dateTime'] ?? '2024-09-23T22:15:31.779'),
       players: [
@@ -143,11 +153,10 @@ class Cricket extends DartsMatch {
         for (final Map<String, dynamic> setJson in data['sets'] ?? [])
           DartsSet.fromJson(setJson)
       ],
-      winningPlayer: data['winningPlayer']);
+      winningPlayer: Player.fromJson(data['winningPlayer']));
 
   @override
   Map<String, dynamic> get toJson => {
-        'cricketNumbers': cricketNumbers,
         'matchId': matchId,
         'matchType': matchType,
         'dateTime': dateTime.toIso8601String(),
@@ -155,7 +164,7 @@ class Cricket extends DartsMatch {
         'playSets': playSets,
         'players': [for (final Player player in players) player.toJson],
         'firstTo': firstTo,
-        'sets': sets,
+        'sets': [for (final DartsSet set in sets) set.toJson],
         'winningPlayer': winningPlayer?.toJson
       };
 

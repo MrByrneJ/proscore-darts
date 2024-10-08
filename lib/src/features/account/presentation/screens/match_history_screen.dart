@@ -19,15 +19,17 @@ class MatchHistoryScreen extends ConsumerWidget {
         appBar: AppBar(
           title: const Text('Match History'),
         ),
-        child: Column(
-          children: [
-            if (state == null || state.history.isEmpty)
-              const Text('Nothing to show',
-                  style: TextStyle(fontSize: 16, color: primaryWhite)),
-            if (state != null && state.history.isNotEmpty)
-              for (final DartsMatch match in state.history)
-                HistoryTile(match: match)
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              if (state == null || state.history.isEmpty)
+                const Text('Nothing to show',
+                    style: TextStyle(fontSize: 16, color: primaryWhite)),
+              if (state != null && state.history.isNotEmpty)
+                for (final DartsMatch match in state.history)
+                  HistoryTile(match: match)
+            ],
+          ),
         ));
   }
 }

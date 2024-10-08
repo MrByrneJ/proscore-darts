@@ -106,6 +106,9 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
           }
           if (state.dartsMatch.sets.last.winningPlayer != null) {
             var newMatch = state.dartsMatch.beginNewSet();
+            if (newMatch is Cricket) {
+              newMatch = newMatch.resetCricketNumbers();
+            }
             return state = state.copyWith(
                 newDartsMatch: newMatch,
                 newDartsRemaining: 3,
@@ -114,6 +117,9 @@ class ScoringScreenServices extends StateNotifier<ScoringScreenState> {
                 newShowEndOfLegDialog: false);
           }
           var newMatch = state.dartsMatch.beginNewLeg();
+          if (newMatch is Cricket) {
+            newMatch = newMatch.resetCricketNumbers();
+          }
           return state = state.copyWith(
               newDartsMatch: newMatch,
               newDartsRemaining: 3,

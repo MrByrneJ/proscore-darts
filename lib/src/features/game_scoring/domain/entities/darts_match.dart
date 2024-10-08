@@ -30,23 +30,24 @@ abstract class DartsMatch {
 
   int getScore(int playerIndex);
   List<Chalk> getChalks(int playerIndex);
+
   int getTurn(DartsMatch match) => match.players.indexWhere((Player e) =>
       e.playerId == match.sets.last.legs.last.throws.last.player.playerId);
+
   int getIndicatedScore(int turn);
   int getLegWins(String playerId) {
     var legWins = 0;
-    for (final set in sets) {
-      for (final _ in set.legs) {
-        if (winningPlayer?.playerId == playerId) legWins += 1;
-      }
+    for (final leg in sets.last.legs) {
+      if (playerId == leg.winningPlayer?.playerId) legWins += 1;
     }
+
     return legWins;
   }
 
   int getSetWins(String playerId) {
     var setWins = 0;
-    for (final _ in sets) {
-      if (winningPlayer?.playerId == playerId) setWins += 1;
+    for (final set in sets) {
+      if (set.winningPlayer?.playerId == playerId) setWins += 1;
     }
     return setWins;
   }
@@ -103,34 +104,40 @@ abstract class DartsMatch {
   }
 
   DartsMatch beginNewSet() {
-    var startingPlayerIndex =
-        getNewTurn(length: players.length, currentIndex: getTurn(this));
+    final previousStartingIndex = sets.last.startingPlayerIndex;
+    final newStartingIndex =
+        getNewTurn(length: players.length, currentIndex: previousStartingIndex);
     var newSets = [
       ...sets,
       DartsSet(
           setIndex: sets.last.setIndex + 1,
-          startingPlayerIndex: startingPlayerIndex,
+          startingPlayerIndex: newStartingIndex,
           legs: [
             DartsLeg(legIndex: 1, throws: [
               DartThrow(
                   throwIndex: 1,
-                  player: players[startingPlayerIndex],
+                  player: players[newStartingIndex],
                   numberOfDartsThrown: 0)
             ])
           ])
     ];
-    return copyWith(newSets: newSets);
+    return copyWith(
+      newSets: newSets,
+    );
   }
 
   DartsMatch beginNewLeg() {
-    var startingPlayer =
-        getNewTurn(length: players.length, currentIndex: getTurn(this));
+    final previousStartingIndex = players.indexWhere((Player element) =>
+        element.playerId == sets.last.legs.last.throws.first.player.playerId);
+    final newStartingIndex =
+        getNewTurn(length: players.length, currentIndex: previousStartingIndex);
+
     var newLegs = [
       ...sets.last.legs,
       DartsLeg(legIndex: sets.last.legs.last.legIndex + 1, throws: [
         DartThrow(
             throwIndex: 1,
-            player: players[startingPlayer],
+            player: players[newStartingIndex],
             numberOfDartsThrown: 0)
       ])
     ];

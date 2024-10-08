@@ -64,8 +64,11 @@ class ScoringScreenState {
 
   ScoringScreenState submitScored(int scored) {
     if (dartsMatch is! X01) return this;
-    if (dartsMatch.getScore(getTurn(dartsMatch)) - scored < 0) scored = 0;
-    return copyWith(newDartsMatch: dartsMatch.inputScored(scored));
+    var newMatch = dartsMatch as X01;
+    if (newMatch.getScore(getTurn(newMatch)) - scored < 0) scored = 0;
+    if (newMatch.getScore(getTurn(newMatch)) - scored == 1 &&
+        newMatch.doubleOut) scored = 0;
+    return copyWith(newDartsMatch: newMatch.inputScored(scored));
   }
 
   ScoringScreenState throwDart(Dart dartThrown, [bool isDart = true]) {

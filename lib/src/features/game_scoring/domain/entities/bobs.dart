@@ -135,7 +135,7 @@ class Bobs extends DartsMatch {
           DartsSet.fromJson(dartSet)
       ],
       allowNegativeNumbers: data['allowNegativeNumbers'] ?? false,
-      winningPlayer: data['winningPlayer']);
+      winningPlayer: Player.fromJson(data['winningPlayer']));
 
   @override
   Map<String, dynamic> get toJson => {

@@ -63,9 +63,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
                 ])
               ],
               startingScore: 501);
-          router
-              .push(StartingScoreScreen.path)
-              .whenComplete(() => ref.invalidate(selectionScreenProvider));
+          router.push(StartingScoreScreen.path);
         },
         playCricket: (PlayCricket playCricket) {
           state = Cricket(
@@ -90,9 +88,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               ])
             ],
           );
-          router
-              .push(PlayerSettingsScreen.path)
-              .whenComplete(() => ref.invalidate(selectionScreenProvider));
+          router.push(PlayerSettingsScreen.path);
         },
         playClock: (PlayClock playClock) {
           state = ATC(
@@ -114,9 +110,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
               ])
             ],
           );
-          router
-              .push(PlayerSettingsScreen.path)
-              .whenComplete(() => ref.invalidate(selectionScreenProvider));
+          router.push(PlayerSettingsScreen.path);
         },
         playBobs: (PlayBobs playBobs) {
           state = Bobs(
@@ -128,9 +122,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
                 Player(playerId: user!.id, displayName: user.displayName)
               ],
               sets: const []);
-          router
-              .push(PlayerSettingsScreen.path)
-              .whenComplete(() => ref.invalidate(selectionScreenProvider));
+          router.push(PlayerSettingsScreen.path);
         },
         updateStartingScore: (UpdateStartingScore selected) =>
             state = state.copyWith(newStartingScore: selected.startingScore),

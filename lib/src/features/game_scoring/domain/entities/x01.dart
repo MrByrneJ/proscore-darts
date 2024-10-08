@@ -100,28 +100,6 @@ class X01 extends DartsMatch {
   int getIndicatedScore(int turn) => sets.last.legs.last.throws.last.scored;
 
   @override
-  X01 copyWith(
-          {List<Player>? newPlayers,
-          bool? newPlaySets,
-          int? newFirstTo,
-          List<DartsSet>? newSets,
-          int? newStartingScore,
-          bool? newDoubleIn,
-          bool? newDoubleOut,
-          Player? newWinningPlayer}) =>
-      X01(
-          matchId: matchId,
-          dateTime: dateTime,
-          doubleIn: newDoubleIn ?? doubleIn,
-          doubleOut: newDoubleOut ?? doubleOut,
-          players: newPlayers ?? players,
-          firstTo: newFirstTo ?? firstTo,
-          playSets: newPlaySets ?? playSets,
-          sets: newSets ?? sets,
-          startingScore: newStartingScore ?? startingScore,
-          winningPlayer: newWinningPlayer ?? winningPlayer);
-
-  @override
   Map<String, dynamic> get toJson => {
         'matchType': matchType,
         'matchId': matchId,
@@ -153,4 +131,26 @@ class X01 extends DartsMatch {
           DartsSet.fromJson(setData)
       ],
       winningPlayer: Player.fromJson(data['winningPlayer']));
+
+  @override
+  X01 copyWith(
+          {List<Player>? newPlayers,
+          bool? newPlaySets,
+          int? newFirstTo,
+          List<DartsSet>? newSets,
+          int? newStartingScore,
+          bool? newDoubleIn,
+          bool? newDoubleOut,
+          Player? newWinningPlayer}) =>
+      X01(
+          matchId: matchId,
+          dateTime: dateTime,
+          doubleIn: newDoubleIn ?? doubleIn,
+          doubleOut: newDoubleOut ?? doubleOut,
+          players: newPlayers ?? players,
+          firstTo: newFirstTo ?? firstTo,
+          playSets: newPlaySets ?? playSets,
+          sets: newSets ?? sets,
+          startingScore: newStartingScore ?? startingScore,
+          winningPlayer: newWinningPlayer ?? winningPlayer);
 }

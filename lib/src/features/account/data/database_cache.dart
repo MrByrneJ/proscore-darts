@@ -48,11 +48,11 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
 
   @override
   Future<AppUser> updateUserDetails(AppUser appUser) async {
-    final SharedPreferences prefs = await _prefs;
-    await prefs.clear();
-    await prefs.setString('userId', appUser.id);
+    print(appUser.toJson);
     await db.collection('users').doc(appUser.id).delete();
+    print('Delete Data');
     await db.collection('users').doc(appUser.id).set(appUser.toJson);
+    print('Start');
     return appUser;
   }
 }

@@ -129,7 +129,7 @@ class ATC extends DartsMatch {
         for (Map<String, dynamic> setData in data['sets'] ?? [])
           DartsSet.fromJson(setData)
       ],
-      winningPlayer: data['winningPlayer']);
+      winningPlayer: Player.fromJson(data['winningPlayer']));
 
   @override
   Map<String, dynamic> get toJson {
