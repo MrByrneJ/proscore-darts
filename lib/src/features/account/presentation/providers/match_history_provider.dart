@@ -15,6 +15,6 @@ class MatchHistoyServices extends StateNotifier<MatchHistoryScreenState> {
   final ICacheFacade cacheFacade;
 
   Future<void> addEvent(MatchHistoryScreenEvent event) async {
-    event.map(expandMatch: (ExpandMatch selected) {});
+    await event.map(expandMatch: (ExpandMatch selected) async {});
   }
 }

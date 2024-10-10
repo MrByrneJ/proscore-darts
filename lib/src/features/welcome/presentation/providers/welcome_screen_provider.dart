@@ -16,8 +16,8 @@ class WelcomeScreenServices extends StateNotifier<WelcomeScreenState> {
 
   final Ref ref;
 
-  void addEvent(WelcomeScreenEvent event) {
-    event.map(userInputting: (event) async {
+  void addEvent(WelcomeScreenEvent event) async {
+    await event.map(userInputting: (event) async {
       state = state.inputDisplayName(event.displayName);
     }, inputtingComplete: (_) async {
       state = state.copyWith(newIsLoading: true);
@@ -26,8 +26,7 @@ class WelcomeScreenServices extends StateNotifier<WelcomeScreenState> {
         await ref
             .read(appUserProvider.notifier)
             .handleEvent(UserServicesEvent.createBasicUser(state.displayName));
-        state = WelcomeScreenState.initial();
-        router.pushReplacement(GameSelectionScreen.path);
+        router.go(GameSelectionScreen.path);
         return;
       }
       state = newState;

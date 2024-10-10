@@ -17,19 +17,18 @@ class AppUserServices extends StateNotifier<AppUser?> {
   final Ref ref;
 
   Future<void> handleEvent(UserServicesEvent event) async {
-    event.map(
-        checkForUser: (event) async =>
-            state = await cacheFacade.checkForCachedUser(),
-        createBasicUser: (event) async => state =
-            await cacheFacade.cacheBasicUser(displayName: event.displayName),
-        clearData: (event) async {
-          await cacheFacade.clearCachedUser();
-          state = AppUser.defaultUser(ref);
-          return router.go(WelcomeScreen.path);
-        },
-        updateUserDetails: (UpdateUserDetails value) async {
-          final user = await cacheFacade.updateUserDetails(value.newDetails);
-          state = user;
-        });
+    await event.map(
+      checkForUser: (event) async =>
+          state = await cacheFacade.checkForCachedUser(),
+      createBasicUser: (event) async => state =
+          await cacheFacade.cacheBasicUser(displayName: event.displayName),
+      clearData: (event) async {
+        await cacheFacade.clearCachedUser();
+        state = AppUser.defaultUser(ref);
+        return router.go(WelcomeScreen.path);
+      },
+      updateUserDetails: (UpdateUserDetails value) async =>
+          state = await cacheFacade.updateUserDetails(value.newDetails),
+    );
   }
 }

@@ -13,10 +13,7 @@ import 'router/router.dart';
 import 'settings/settings_controller.dart';
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    super.key,
-    required this.settingsController,
-  });
+  const MyApp({super.key, required this.settingsController});
 
   static const path = '/';
 
@@ -102,7 +99,6 @@ class MyApp extends StatelessWidget {
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
   static const path = '/';
-
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return FutureBuilder(

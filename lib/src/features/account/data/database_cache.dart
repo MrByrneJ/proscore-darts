@@ -21,8 +21,8 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
     final AppUser appUser =
         AppUser.createAppUserWithRandomId(ref: ref, name: displayName);
     final SharedPreferences prefs = await _prefs;
-    prefs.clear();
-    prefs.setString('userId', appUser.id);
+    await prefs.clear();
+    await prefs.setString('userId', appUser.id);
     await db.collection('users').delete();
     await db.collection('users').doc(appUser.id).set(appUser.toJson);
     return appUser;
@@ -35,7 +35,6 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
     if (id == null) return AppUser.defaultUser(ref);
     var details = await db.collection('users').doc(id).get();
     if (details == null) return AppUser.defaultUser(ref);
-
     return AppUser.fromJson(details);
   }
 
@@ -48,11 +47,7 @@ class SharedPreferencesCacheFacade implements ICacheFacade {
 
   @override
   Future<AppUser> updateUserDetails(AppUser appUser) async {
-    print(appUser.toJson);
-    await db.collection('users').doc(appUser.id).delete();
-    print('Delete Data');
     await db.collection('users').doc(appUser.id).set(appUser.toJson);
-    print('Start');
     return appUser;
   }
 }

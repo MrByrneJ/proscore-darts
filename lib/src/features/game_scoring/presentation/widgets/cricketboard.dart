@@ -95,7 +95,7 @@ class ScoreBar extends ConsumerWidget {
     final state = ref.watch(scoringScreenProvider);
     var match = state.dartsMatch;
     final darts = match.sets.last.legs.last.throws.last.darts;
-    List<int> cricketNumbers = [];
+    List<String> cricketNumbers = [];
     if (match is Cricket) {
       match.cricketNumbers[0].forEach((key, value) => cricketNumbers.add(key));
     }
@@ -114,10 +114,10 @@ class ScoreBar extends ConsumerWidget {
                       .handleEvent(ScoringScreenEvent.throwDart(
                         Dart(
                             dartIndex: darts.length + 1,
-                            section: target,
+                            section: int.tryParse(target) ?? 0,
                             multiplier: 1),
                       )),
-                  lable: '$target',
+                  lable: target,
                   width: 60,
                   height: 60),
           ],

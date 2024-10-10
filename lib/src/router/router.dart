@@ -11,9 +11,7 @@ import '../features/game_selection/presentation/screens/starting_score_screen.da
 import '../features/welcome/presentation/screens/welcome_screen.dart';
 
 final router = GoRouter(routes: [
-  GoRoute(
-      path: SplashScreen.path,
-      builder: (context, state) => const SplashScreen()),
+  GoRoute(path: SplashScreen.path, builder: (context, state) => SplashScreen()),
   GoRoute(
       path: WelcomeScreen.path,
       builder: (context, state) => const WelcomeScreen()),

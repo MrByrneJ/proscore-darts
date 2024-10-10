@@ -70,7 +70,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
             matchId: const Uuid().v1(),
             dateTime: DateTime.now(),
             cricketNumbers: const [
-              {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0}
+              {'20': 0, '19': 0, '18': 0, '17': 0, '16': 0, '15': 0, '25': 0}
             ],
             firstTo: 5,
             players: [
@@ -192,7 +192,7 @@ class SelectionScreenServices extends StateNotifier<DartsMatch> {
           if (newState is Cricket) {
             newState = newState.copyWith(newCricketNumbers: [
               for (var _ in newState.players)
-                {20: 0, 19: 0, 18: 0, 17: 0, 16: 0, 15: 0, 25: 0}
+                {'20': 0, '19': 0, '18': 0, '17': 0, '16': 0, '15': 0, '25': 0}
             ]);
           }
           state = newState;

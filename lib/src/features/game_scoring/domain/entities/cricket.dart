@@ -13,11 +13,11 @@ class Cricket extends DartsMatch {
       super.winningPlayer})
       : super(
             matchType: 'c', name: 'Cricket', startingScore: 0, playSets: false);
-  final List<Map<int, int>> cricketNumbers;
+  final List<Map<String, int>> cricketNumbers;
 
   Cricket setCricketNumbers(List<int> numbers) {
-    List<Map<int, int>> cNums = [
-      for (var _ in players) {for (var number in numbers) number: 0}
+    List<Map<String, int>> cNums = [
+      for (var _ in players) {for (var number in numbers) '$number': 0}
     ];
     return copyWith(newCricketNumbers: cNums);
   }
@@ -26,11 +26,11 @@ class Cricket extends DartsMatch {
   Dart checkDartIsValid(Dart dartThrown) {
     final section = dartThrown.section == 50 ? 25 : dartThrown.section;
     if (canScore(section: section, turn: getTurn(this))) return dartThrown;
-    if (cricketNumbers[getTurn(this)][section]! >= 3) {
+    if (cricketNumbers[getTurn(this)]['$section']! >= 3) {
       return Dart(dartIndex: dartThrown.dartIndex, section: 0, multiplier: 1);
     }
-    if (cricketNumbers[getTurn(this)][section] == 0) return dartThrown;
-    if (cricketNumbers[getTurn(this)][section] == 1) {
+    if (cricketNumbers[getTurn(this)]['$section'] == 0) return dartThrown;
+    if (cricketNumbers[getTurn(this)]['$section'] == 1) {
       return dartThrown.multiplier == 1
           ? dartThrown
           : Dart(
@@ -43,11 +43,11 @@ class Cricket extends DartsMatch {
   Cricket updateAfterThrow() {
     var thrown = sets.last.legs.last.throws.last;
     final dartThrown = thrown.darts.last;
-    Map<int, int> temp = {};
+    Map<String, int> temp = {};
     temp.addEntries(cricketNumbers[getTurn(this)].entries);
     var set = sets.last.updateThrow(thrown);
     temp.forEach((key, value) {
-      if (dartThrown.section == key) {
+      if ('${dartThrown.section}' == key) {
         temp[key] = temp[key]! + dartThrown.multiplier;
         final n = temp[key]!;
         if (canScore(section: dartThrown.section, turn: getTurn(this))) {
@@ -71,7 +71,7 @@ class Cricket extends DartsMatch {
     var canScore = false;
     for (var i = 0; i < cricketNumbers.length; i++) {
       if (i == turn) continue;
-      final temp = cricketNumbers[i][section] ?? 0;
+      final temp = cricketNumbers[i]['$section'] ?? 0;
       if (temp < 3) canScore = true;
     }
     return canScore;
@@ -131,7 +131,7 @@ class Cricket extends DartsMatch {
 
   @override
   List<Chalk> getChalks(int playerIndex) {
-    Map<int, int> temp = cricketNumbers[playerIndex];
+    Map<String, int> temp = cricketNumbers[playerIndex];
     List<Chalk> chalks = [];
     temp.forEach((key, value) => chalks.add(Chalk('$value')));
     return chalks;
@@ -141,7 +141,10 @@ class Cricket extends DartsMatch {
   int getIndicatedScore(int turn) => sets.last.legs.last.throws.last.scored;
 
   factory Cricket.fromJson(Map<String, dynamic> data) => Cricket(
-      cricketNumbers: const [],
+      cricketNumbers: [
+        for (Map<String, dynamic> map in data['cricketNumbers'])
+          map.cast<String, int>()
+      ],
       matchId: data['matchId'] ?? 'Error',
       dateTime: DateTime.parse(data['dateTime'] ?? '2024-09-23T22:15:31.779'),
       players: [
@@ -160,6 +163,7 @@ class Cricket extends DartsMatch {
         'matchId': matchId,
         'matchType': matchType,
         'dateTime': dateTime.toIso8601String(),
+        'cricketNumbers': [...cricketNumbers],
         'startingScore': startingScore,
         'playSets': playSets,
         'players': [for (final Player player in players) player.toJson],
@@ -170,7 +174,7 @@ class Cricket extends DartsMatch {
 
   @override
   Cricket copyWith(
-          {List<Map<int, int>>? newCricketNumbers,
+          {List<Map<String, int>>? newCricketNumbers,
           List<Player>? newPlayers,
           bool? newPlaySets,
           int? newFirstTo,

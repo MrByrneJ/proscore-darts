@@ -16,7 +16,7 @@ class AddPlayerServices extends StateNotifier<AddPlayerScreenState> {
 
   final Ref ref;
 
-  void addEvent(AddPlayerEvent event) {
+  void addEvent(AddPlayerEvent event) async {
     event.map(
       selectedAddPlayer: (_) {
         router.push(AddPlayerScreen.path);
